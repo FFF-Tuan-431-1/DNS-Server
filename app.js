@@ -1,8 +1,17 @@
 const packet = require('dns-packet');
 const dgram = require('dgram');
+const path = require('path');
 const query = require('./query');
+const {init: initLocalQuery} = require('./query/localQuery');
 
 const socket = dgram.createSocket('udp4');
+
+let recordFilePath = process.argv[2];
+if (!path.isAbsolute(recordFilePath)) {
+  recordFilePath = path.join(__dirname, recordFilePath)
+}
+initLocalQuery(recordFilePath);
+
 
 socket.on('message', (msg, {port, address}) => {
     const queryPacket = packet.decode(msg);

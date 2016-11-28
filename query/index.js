@@ -4,10 +4,8 @@
  * - if not found, use remoteQuery
  */
 
-const {query: localQuery, init} = require('./localQuery');
+const {query: localQuery} = require('./localQuery');
 const {query: remoteQuery} = require('./remoteQuery');
-
-init('./query/data.xlsx');
 
 module.exports = function query(type, domain) {
   return new Promise((resolve, reject) => {
