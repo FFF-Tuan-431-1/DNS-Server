@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ipaddr.js": "^1.2.0"
+    "dns-packet": "^1.1.1",
+    "ipaddr.js": "^1.2.0",
+    "xlsx": "^0.8.0"
   }
 }
