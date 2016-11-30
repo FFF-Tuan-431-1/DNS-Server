@@ -6,6 +6,7 @@ function query(type, name) {
       if (err) {
         return reject(err)
       }
+      console.info(`Found query ${type}:${name} at remote`);
       resolve(result.map(v => ({type, name, data: v})))
     })
   })
