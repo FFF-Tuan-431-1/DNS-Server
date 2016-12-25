@@ -22,13 +22,10 @@ function query(type, name) {
   return records.filter(v => v.type === type && v.name === name)
 }
 
-function learnFromResult(type, name, data){
-  console.log("learning: ", data);
-  if (!hasRecord) {
-    records.push({
-      type, name, data
-    })
-  }
+function learnFromResult({type, name, data}){
+  records.push({
+    type, name, data
+  });
 }
 
 // test for directly execute

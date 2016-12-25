@@ -1,13 +1,12 @@
-const dns = require('dns');
-var packet = require('dns-packet');
-var dgram = require('dgram');
-var {learn: learnFromResult} = require('./localQuery')
+const packet = require('dns-packet');
+const dgram = require('dgram');
+const {learnFromResult: learnFromResult} = require('./localQuery')
 
-var socket = dgram.createSocket('udp4');
+const socket = dgram.createSocket('udp4');
 
 function query(type, name) {
   return new Promise((resolve, reject) => {
-    var buf = packet.encode({
+    const buf = packet.encode({
       type: 'query',
       id: 1300,
       flags: packet.RECURSION_DESIRED,
@@ -19,14 +18,15 @@ function query(type, name) {
 
     socket.once('message', (msg) => {
       const resolvedPacket = packet.decode(msg)
-      console.log(resolvedPacket)
+      console.info(`Found query ${type}:${name} at remote`);
+      resolvedPacket.answers.forEach(learnFromResult);
       resolve(resolvedPacket.answers.map(v => ({
         type: v.type, 
         name: v.name,
         data: v.data
       })))
     })
-    socket.send(buf, 0, buf.length, 53, '8.8.8.8');
+    socket.send(buf, 0, buf.length, 53, '223.5.5.5');
   })
 }
 
