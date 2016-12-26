@@ -7,6 +7,8 @@ const {init: initLocalQuery} = require('./query/localQuery');
 const socket = dgram.createSocket('udp4');
 
 let recordFilePath = process.argv[2];
+global.assignedDNS = process.argv[3] || '223.5.5.5';
+
 if (!path.isAbsolute(recordFilePath)) {
   recordFilePath = path.join(__dirname, recordFilePath)
 }

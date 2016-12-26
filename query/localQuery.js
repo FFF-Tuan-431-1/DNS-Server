@@ -22,6 +22,12 @@ function query(type, name) {
   return records.filter(v => v.type === type && v.name === name)
 }
 
+function learnFromResult({type, name, data}){
+  records.push({
+    type, name, data
+  });
+}
+
 // test for directly execute
 if (require.main === module) {
   init('./data.xlsx');
@@ -30,5 +36,6 @@ if (require.main === module) {
 
 module.exports = {
   init,
-  query
+  query,
+  learnFromResult
 };
