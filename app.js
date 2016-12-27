@@ -26,12 +26,14 @@ socket.on('message', (msg, {port, address}) => {
 
     query(question.type, question.name)
       .then(record => {
+        let ipBlocked = record.map(v => v.data).includes('0.0.0.0');
         const buf = packet.encode({
           type: 'response',
           id: queryPacket.id,
-          flags: packet.AUTHENTIC_DATA,
-          answers: record
+          flags: ipBlocked ? packet.CHECKING_DISABLED : packet.AUTHENTIC_DATA,
+          answers: ipBlocked ? [] : record
         });
+
         socket.send(buf, 0, buf.length, port, address);
       }).catch(console.error)
 });
