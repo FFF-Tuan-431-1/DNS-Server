@@ -3,7 +3,7 @@ const dgram = require('dgram');
 const path = require('path');
 const query = require('./query');
 const {init: initLocalQuery} = require('./query/localQuery');
-let argv = require('yargs')
+const argv = require('yargs')
   .default('recordFilePath', './query/data.xlsx')
   .default('assignedDNS', '223.5.5.5')
   .argv;
