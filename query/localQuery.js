@@ -23,6 +23,7 @@ function query(type, name) {
 }
 
 function learnFromResult({type, name, data}){
+  console.log(records);
   records.push({
     type, name, data
   });

@@ -26,7 +26,7 @@ function query(type, name) {
         data: v.data
       })))
     })
-    socket.send(buf, 0, buf.length, 53, global.assignedDNS);
+    socket.send(buf, 0, buf.length, 53, assignedDNS);
   })
 }
 

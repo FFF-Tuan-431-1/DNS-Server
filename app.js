@@ -3,16 +3,21 @@ const dgram = require('dgram');
 const path = require('path');
 const query = require('./query');
 const {init: initLocalQuery} = require('./query/localQuery');
+let argv = require('yargs')
+  .default('recordFilePath', './query/data.xlsx')
+  .default('assignedDNS', '223.5.5.5')
+  .argv;
+global.assignedDNS = argv.assignedDNS;
 
 const socket = dgram.createSocket('udp4');
 
-let recordFilePath = process.argv[2];
-global.assignedDNS = process.argv[3] || '223.5.5.5';
+// let recordFilePath = process.argv[2] || './query/data.xlsx';
+// global.assignedDNS = process.argv[3] || '223.5.5.5';
 
-if (!path.isAbsolute(recordFilePath)) {
-  recordFilePath = path.join(__dirname, recordFilePath)
+if (!path.isAbsolute(argv.recordFilePath)) {
+  argv.recordFilePath = path.join(__dirname, argv.recordFilePath)
 }
-initLocalQuery(recordFilePath);
+initLocalQuery(argv.recordFilePath);
 
 
 socket.on('message', (msg, {port, address}) => {
