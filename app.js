@@ -1,4 +1,4 @@
-const packet = require('dns-packet');
+const packet = require('./dns-packet');
 const dgram = require('dgram');
 const path = require('path');
 const query = require('./query');
@@ -28,7 +28,7 @@ socket.on('message', (msg, {port, address}) => {
         const buf = packet.encode({
           type: 'response',
           id: queryPacket.id,
-          flags: ipBlocked ? packet.CHECKING_DISABLED : packet.AUTHENTIC_DATA,
+          type: ipBlocked ? 'error' : 'response',
           answers: ipBlocked ? [] : record
         });
 
