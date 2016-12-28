@@ -2,6 +2,7 @@ const packet = require('dns-packet');
 const dgram = require('dgram');
 const {learnFromResult} = require('./localQuery')
 const socket = dgram.createSocket('udp4');
+const argv = require('yargs').argv;
 
 function query(type, name) {
   return new Promise((resolve, reject) => {
