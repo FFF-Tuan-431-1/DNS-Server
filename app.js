@@ -1,18 +1,21 @@
-const packet = require('dns-packet');
+const packet = require('./dns-packet');
 const dgram = require('dgram');
 const path = require('path');
 const query = require('./query');
 const {init: initLocalQuery} = require('./query/localQuery');
+const argv = require('yargs')
+  .default('data', './query/data.xlsx')
+  .default('dns', '223.5.5.5')
+  .argv;
+global.assignedDNS = argv.assignedDNS;
 
 const socket = dgram.createSocket('udp4');
 
-let recordFilePath = process.argv[2];
-global.assignedDNS = process.argv[3] || '223.5.5.5';
-
-if (!path.isAbsolute(recordFilePath)) {
-  recordFilePath = path.join(__dirname, recordFilePath)
+if (!path.isAbsolute(argv.data)) {
+  argv.data = path.join(__dirname, argv.data)
 }
-initLocalQuery(recordFilePath);
+
+initLocalQuery(argv.data);
 
 
 socket.on('message', (msg, {port, address}) => {
@@ -21,12 +24,14 @@ socket.on('message', (msg, {port, address}) => {
 
     query(question.type, question.name)
       .then(record => {
+        let ipBlocked = record.map(v => v.data).includes('0.0.0.0');
         const buf = packet.encode({
           type: 'response',
           id: queryPacket.id,
-          flags: packet.AUTHENTIC_DATA,
-          answers: record
+          type: ipBlocked ? 'error' : 'response',
+          answers: ipBlocked ? [] : record
         });
+
         socket.send(buf, 0, buf.length, port, address);
       }).catch(console.error)
 });

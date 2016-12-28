@@ -1,7 +1,6 @@
 const packet = require('dns-packet');
 const dgram = require('dgram');
 const {learnFromResult} = require('./localQuery')
-
 const socket = dgram.createSocket('udp4');
 
 function query(type, name) {
@@ -26,7 +25,7 @@ function query(type, name) {
         data: v.data
       })))
     })
-    socket.send(buf, 0, buf.length, 53, global.assignedDNS);
+    socket.send(buf, 0, buf.length, 53, argv.dns);
   })
 }
 

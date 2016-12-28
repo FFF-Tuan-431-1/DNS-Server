@@ -10,7 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "dns-packet": "^1.1.1",
+    "ip": "^1.1.4",
     "ipaddr.js": "^1.2.0",
-    "xlsx": "^0.8.0"
+    "safe-buffer": "^5.0.1",
+    "xlsx": "^0.8.0",
+    "yargs": "6.5.0"
   }
 }
